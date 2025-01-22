@@ -12,7 +12,7 @@
 Клонируйте репозиторий:
 
 ```
-git clone git@github.com:Daniil-Tarasov/web-shop.git
+git clone git@github.com:Daniil-Tarasov/Web-shop.git
 ```
 
 Установите зависимости:
