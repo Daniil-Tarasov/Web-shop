@@ -23,3 +23,17 @@ def contacts(request):
         message = request.POST.get('message')
         return HttpResponse(f"Спасибо, {name}! Мы обязательно с вами свяжемся.")
     return render(request, 'contacts.html', {'contacts': contacts_list})
+
+
+def product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+    context = {
+        'product_name': product.name_product,
+        'description': product.description,
+        'image': product.image,
+        'category': product.category,
+        'price': product.price,
+        'created_at': product.created_at,
+        'updated_at': product.updated_at
+    }
+    return render(request, 'product_detail.html', context=context)
