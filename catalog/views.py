@@ -1,17 +1,18 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Product, Contacts
 
 
 def home(request):
     latest_products = Product.objects.order_by('created_at')[:5]
+    products = Product.objects.all()
 
     for product in latest_products:
         print(
             f'{product.name_product}: {product.description}. Дата создания: {product.created_at}. Цена: {product.price}')
 
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'products': products})
 
 
 def contacts(request):
@@ -26,7 +27,7 @@ def contacts(request):
 
 
 def product_detail(request, pk):
-    product = Product.objects.get(id=pk)
+    product = get_object_or_404(Product, id=pk)
     context = {
         'product_name': product.name_product,
         'description': product.description,
