@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from .models import Product, Contacts
+from .models import Product, Contacts, Category
 
 
 def home(request):
@@ -38,3 +38,33 @@ def product_detail(request, pk):
         'updated_at': product.updated_at
     }
     return render(request, 'product_detail.html', context=context)
+
+
+def add_product(request):
+
+    if request.method == 'POST':
+        name_product = request.POST.get('name_product')
+        category = request.POST.get('category')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        image = request.FILES.get('image')
+
+        name_category=None
+        if category:
+            try:
+                name_category = Category.get(name_category=category)
+            except Category.DoesNotExist:
+                return HttpResponse("Категория не найдена.")
+
+
+        product = Product(
+            name_product=name_product,
+            category=name_category,
+            description=description,
+            price=price,
+            image=image,
+        )
+
+        product.save()
+        return HttpResponse(f"Товар {name_product} успешно добавлен!")
+    return render(request, 'add_product_user.html')

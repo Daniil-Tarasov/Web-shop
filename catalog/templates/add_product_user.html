@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Новый товар{% endblock %}
+
+{% block content %}
+<form method="post" action="" class="form-floating">
+  <div class="mb-3">
+    <label for="name_product" class="form-label">Название продукта</label>
+    <input type="text" class="form-control" name="name_product" id="name_product" placeholder="Введите название продукта" required>
+  </div>
+  <div class="mb-3">
+    <label for="category" class="form-label">Категория</label>
+    <input type="text" class="form-control" name="category" id="category" placeholder="Укажите категорию продукта">
+  </div>
+  <div class="mb-3">
+      <label for="description">Описание продукта</label>
+      <textarea type="text" name="description" class="form-control" id="description" placeholder="Введите описание продукта" required></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Стоимость</label>
+    <input type="number" class="form-control" name="price" id="price" placeholder="Укажите стоимость продукта" required min="0">
+  </div>
+  <div class="mb-3">
+    <label for="image" class="form-label">Изображение продукта</label>
+    <input class="form-control" type="file" id="image" name="image" accept="image/*">
+  </div>
+  <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+{% endblock %}
