@@ -44,22 +44,15 @@ def add_product(request):
 
     if request.method == 'POST':
         name_product = request.POST.get('name_product')
-        category = request.POST.get('category')
+        category_id = request.POST.get('category')
         description = request.POST.get('description')
         price = request.POST.get('price')
         image = request.FILES.get('image')
 
-        name_category=None
-        if category:
-            try:
-                name_category = Category.get(name_category=category)
-            except Category.DoesNotExist:
-                return HttpResponse("Категория не найдена.")
-
-
+        category = Category.objects.get(id=category_id)
         product = Product(
             name_product=name_product,
-            category=name_category,
+            category=category,
             description=description,
             price=price,
             image=image,
@@ -67,4 +60,21 @@ def add_product(request):
 
         product.save()
         return HttpResponse(f"Товар {name_product} успешно добавлен!")
-    return render(request, 'add_product_user.html')
+    category = Category.objects.all()
+    return render(request, 'add_product_user.html', {'categories': category})
+
+
+def add_category(request):
+
+    if request.method == "POST":
+        name_category = request.POST.get('name_category')
+        description = request.POST.get("description")
+
+        category = Category(
+            name_category = name_category,
+            description = description
+        )
+
+        category.save()
+        return HttpResponse(f"Категория {name_category} успешно добавлена!")
+    return render(request, 'add_category_user.html')
