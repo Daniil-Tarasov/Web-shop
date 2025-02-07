@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -6,11 +7,15 @@ from .models import Product, Contacts, Category
 
 def home(request):
     latest_products = Product.objects.order_by('created_at')[:5]
-    products = Product.objects.all()
+    products_list = Product.objects.all()
 
     for product in latest_products:
         print(
             f'{product.name_product}: {product.description}. Дата создания: {product.created_at}. Цена: {product.price}')
+
+    paginator = Paginator(products_list, 3)
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
 
     return render(request, 'home.html', {'products': products})
 
