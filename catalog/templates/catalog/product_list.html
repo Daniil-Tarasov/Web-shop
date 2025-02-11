@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'catalog/base.html' %}
 {% load my_tags %}
 
 {% block title %}Каталог{% endblock %}
@@ -11,7 +11,7 @@
 </div>
 <div class="container">
     <div class="row text-center d-flex justify-content-center">
-    {% for product in products %}
+    {% for product in object_list %}
             <div class="col-3">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
@@ -33,20 +33,20 @@
     </div>
     <div class="btn-toolbar mb-3" role="toolbar" aria-label="Панель инструментов с группами кнопок">
       <div class="btn-group me-2" role="group" aria-label="Первая группа">
-        {% if products.has_previous %}
-          <a href="?page={{ products.previous_page_number }}" class="btn btn-outline-secondary">Назад</a>
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-secondary">Назад</a>
         {% endif %}
 
-        {% for page_num in products.paginator.page_range %}
-          {% if products.number == page_num %}
+        {% for page_num in page_obj.paginator.page_range %}
+          {% if page_obj.number == page_num %}
             <button type="button" class="btn btn-outline-secondary">{{ page_num }}</button>
           {% else %}
             <a href="?page={{ page_num }}" class="btn btn-outline-secondary">{{ page_num }}</a>
           {% endif %}
         {% endfor %}
 
-        {% if products.has_next %}
-          <a href="?page={{ products.next_page_number }}" class="btn btn-outline-secondary">Вперед</a>
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-secondary">Вперед</a>
         {% endif %}
       </div>
     </div>
