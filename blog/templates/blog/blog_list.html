@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+
+{% block title %}Блоги{% endblock %}
+
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Skyblog</h1>
+    <p class="lead">Здесь вы можете поделиться личным опытом в программировании, создании, продаже, а также узнать
+        что-то новое.</p>
+    <a class="p-2 btn btn-primary" href="/blog_create/">Создать новый блог</a>
+</div>
+<div class="container">
+    <div class="row d-flex justify-content-center">
+    {% for blog in object_list %}
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{{ blog.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p>{{ blog.content |truncatechars:220 }}</p>
+                    <p> <img src="{{ blog.preview | media_filter }}" style="width: 500px" alt="{{ blog.title }}"></p>
+                    <i class="bi bi-eye"></i>
+                    <a class="link" href="/blog/{{ blog.id }}">Читать далее</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
