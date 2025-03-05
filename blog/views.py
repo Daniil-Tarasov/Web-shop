@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
-from blog.form import BlogForm
+from blog.forms import BlogForm
 from blog.models import Blog
 
 

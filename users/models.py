@@ -4,6 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True, verbose_name="Email")
 
     avatar = models.ImageField(upload_to='users/images', verbose_name='Аватар', blank=True, null=True)

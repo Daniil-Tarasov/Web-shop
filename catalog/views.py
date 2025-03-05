@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .form import ProductForm, CategoryForm
+from .forms import ProductForm, CategoryForm
 from .models import Product, Contacts
 
 
