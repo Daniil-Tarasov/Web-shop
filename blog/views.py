@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -29,28 +29,24 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('blog:blogs_list')
 
 
-class BlogUpdateView(LoginRequiredMixin, UpdateView):
+class BlogUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Blog
     form_class = BlogForm
     template_name = 'blog/blog_form.html'
     success_url = reverse_lazy('blog:blogs_list')
+    permission_required = 'blog.change_blog'
 
     def get_success_url(self):
         return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
 
-    def get_form_class(self):
-        user = self.request.user
-        if user.has_perm('blog.change_blog'):
-            return BlogForm
+    def handle_no_permission(self):
         raise PermissionDenied
 
 
-class BlogDeleteView(LoginRequiredMixin, DeleteView):
+class BlogDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:blogs_list')
+    permission_required = 'blog.change_blog'
 
-    def get_form_class(self):
-        user = self.request.user
-        if user.has_perm('blog.change_blog'):
-            return BlogForm
+    def handle_no_permission(self):
         raise PermissionDenied
