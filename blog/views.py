@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ModelForm
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
@@ -38,7 +38,19 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('blog:blog_detail', args=[self.kwargs.get('pk')])
 
+    def get_form_class(self):
+        user = self.request.user
+        if user.has_perm('blog.change_blog'):
+            return BlogForm
+        raise PermissionDenied
+
 
 class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:blogs_list')
+
+    def get_form_class(self):
+        user = self.request.user
+        if user.has_perm('blog.change_blog'):
+            return BlogForm
+        raise PermissionDenied
