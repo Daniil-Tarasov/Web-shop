@@ -65,6 +65,13 @@ class ProductForm(ModelForm):
         })
 
 
+class ProductModeratorForm(ModelForm):
+
+    class Meta:
+        model = Product
+        fields  = ('flag_publication',)
+
+
 class CategoryForm(ModelForm):
     class Meta:
         model = Category
