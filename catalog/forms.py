@@ -12,7 +12,7 @@ class ProductForm(ModelForm):
 
     class Meta:
         model = Product
-        exclude = ("created_at", "updated_at",)
+        exclude = ("created_at", "updated_at", "owner")
 
     def clean_name_product(self):
 
@@ -63,6 +63,13 @@ class ProductForm(ModelForm):
         self.fields["image"].widget.attrs.update({
             'class': "form-control"
         })
+
+
+class ProductModeratorForm(ModelForm):
+
+    class Meta:
+        model = Product
+        fields  = ('flag_publication',)
 
 
 class CategoryForm(ModelForm):
