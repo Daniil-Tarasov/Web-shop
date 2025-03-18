@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -15,6 +16,13 @@ from .models import Product, Contacts
 class ProductListView(ListView):
     model = Product
     paginate_by = 3
+
+    def get_queryset(self):
+        queryset = cache.get('product_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('product_queryset', queryset, 60 * 15)
+        return queryset
 
 
 @method_decorator(cache_page(60 * 15), name='dispatch')
