@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -10,7 +10,8 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .forms import ProductForm, CategoryForm, ProductModeratorForm
-from .models import Product, Contacts
+from .models import Product, Contacts, Category
+from .services import get_products_by_category
 
 
 class ProductListView(ListView):
@@ -69,6 +70,24 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if user.groups.filter(name='Product Moderator').exists():
             return ProductModeratorForm
         raise PermissionDenied
+
+
+class ProductsByCategoryView(ListView):
+    template_name = 'catalog/products_by_category.html'
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        context['category'] = Category.objects.get(id=category_id)
+        return context
+
+
+class CategoryListView(ListView):
+    model = Category
 
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
